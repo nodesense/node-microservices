@@ -6,7 +6,7 @@ import { connectMongo } from './app/config/db';
 
 const startServer = async () => {
     try {
-        await connectMongo();
+        await connectMongo(); // if db not available, server is not started
         console.log("database connected successfully");
         var server = http.createServer(app)
  
@@ -23,6 +23,7 @@ const startServer = async () => {
     }
     catch(err) {
         console.log("Error while connecting database", err)
+        process.exit(-1); // unhappy exit
     }
 }
 
