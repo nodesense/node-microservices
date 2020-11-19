@@ -3,6 +3,12 @@ import app from "./app";
 import http from 'http';
 import { connectMongo } from './app/config/db';
 
+import './app/config/rabbit-mq';
+import {redisClient} from './app/config/redis-db';
+const redis = require("redis");
+
+//redisClient.set("key", "value", redis.print);
+//redisClient.get("key", redis.print);
 
 const startServer = async () => {
     try {
