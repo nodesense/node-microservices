@@ -8,6 +8,14 @@ import {productRoutes} from './routes';
 import {redisClient} from './config/redis-db';
 import { publish, subscribe } from './config/rabbit-mq';
 
+// npm install yamljs swagger-ui-express
+const YAML = require('yamljs');
+
+const swaggerDocument = YAML.load('./docs/swagger.yml');
+
+const swaggerUi = require('swagger-ui-express');
+// const swaggerDocument = require('../../docs/swagger.json');
+
 console.log('config', config);
 
 subscribe("reviews_queue");
@@ -18,6 +26,9 @@ app.use(express.json());
 configureAccessLog(app);
 
 app.use(productRoutes);
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 
 app.get('/', (req, res) => {
     res.json({'hello': 'world'})
@@ -45,5 +56,6 @@ app.post('/reviews', (req, res) => {
     res.json(req.body)
 })
 
+// do not use listen here as we need to run the test case
 
 export default app;
